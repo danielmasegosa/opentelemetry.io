@@ -1,5 +1,5 @@
 ---
-title: Configuración y comandos para construir, publicar en el entorno local y más
+title: Configuración de desarrollo y comandos para construir, servir y más
 linkTitle: Configuración del entorno y más
 description: Aprende como configurar el entorno de desarrollo para este sitio web.
 weight: 60
@@ -9,23 +9,23 @@ Las siguientes instrucciones detallan como configurar el entorno de desarrollo p
 
 ## Configuración IDE en la nube
 
-Estas instrucciones están pensadas para [Gitpod.io], ajustalas como sea necesario para usar tu IDE en la nube:
+Estas instrucciones están pensadas para [Gitpod.io], adáptalas si prefieres otro entorno de desarrollo en la nube:
 
 1.  Bifurcar este repositorio. Si necesitas ayuda, mira en [Bifurcar un repositorio][fork].
-2.  En [gitpod.io/workspaces], crea un nuevo espacio de trabajo (haz esto solo una vez) o abre un espacio de trabajo existente de tu fork. Tambien puedes visitar el link con el formato:
+2.  En [gitpod.io/workspaces], crea un nuevo espacio de trabajo (haz esto solo una vez) o abre un espacio de trabajo existente de tu fork. También puedes visitar el link con el formato:
     `https://gitpod.io#https://github.com/YOUR_GITHUB_ID/opentelemetry.io`.
 
-    > **Nota**: Si ya tienes los permisos necesiarios para trabajar en este repositorio, 
-    > o solo quieres echar un vistazo, abre
+    > **Nota**: Si tienes los permisos necesarios para trabajar directamente en este repositorio,
+    > o simplemente quieres explorar, abre
     > <https://gitpod.io/#https://github.com/open-telemetry/opentelemetry.io>.
 
-Gitpod instalará automaticamente los paquetes necesarios por ti.
+Gitpod instalará automáticamente los paquetes necesarios por ti durante la inicialización del entorno.
 
-Aún no estas listo para [construir](#construir), [publicar en el entorno local](#publicar) o hacer actualizaciones en los ficheros del sitio web.
+Aún no estás listo para [construir](#construir), [servir en el entorno local](#servir-en-el-entorno-local) o hacer actualizaciones en los ficheros del sitio web.
 
 ## Configuración local
 
-1.  [Bifurca][fork] y [clone][] el repositorio del sitio web desde 
+1.  [Crea un fork][fork] y [clona][clone] el repositorio del sitio web desde 
     <{{% param github_repo %}}>.
 2.  Navega hasta el directorio del repositorio clonado.
 3.  Instala o actualiza a [**una versión LTS**][nodejs-rel] de Node.js.
@@ -42,17 +42,17 @@ Aún no estas listo para [construir](#construir), [publicar en el entorno local]
     > nvm install lts && nvm use lts
     ```
 
-4.  Instala los paquetes de y otros prerequisitos:
+4.  Instala los paquetes del proyecto y otros prerequisitos:
 
     ```sh
     npm install
     ```
 
-Aún no estas listo para [construir](#construir), [publicar en el entorno local](#publicar) o hacer actualizaciones en los ficheros del sitio web.
+Aún no estás listo para [construir](#construir), [servir en el entorno local](#servir-en-el-entorno-local) o hacer actualizaciones en los ficheros del sitio web.
 
 ### Construir
 
-Para construir el sitio web:
+Para construir este sitio web:
 
 ```sh
 npm run build
@@ -60,9 +60,9 @@ npm run build
 
 Los ficheros se generan bajo la carpeta `public`.
 
-### Publicar en el entorno local
+### Servir en el entorno local
 
-Para publicar en el entorno local, ejecuta el comando:
+Para servir en el entorno local, ejecuta el comando:
 
 ```sh
 npm run serve
@@ -70,54 +70,40 @@ npm run serve
 
 La web estará publicada en [localhost:1313][].
 
-If you need to test [Netlify] redirects, use the following command and visit the
-site at [localhost:8888][]:
+Si necesitas probar la redirección de [Netlify], usa el siguiente comando y accede a través de [localhost:8888][]:
 
 ```sh
 npm run serve:netlify
 ```
 
-The serve command serves files from memory, not from disk.
+El comando serve publica el sitio web utilizando archivos en memoria, no desde el disco.
 
-If you see an error like `too many open files` or `pipe failed` under macOS, you
-might need to increase the file descriptor limit. See
-[Hugo issue #6109](https://github.com/gohugoio/hugo/issues/6109).
+Si ves un error como `too many open files` o `pipe failed` en macOS, puede que necesites aumentar el límite de ficheros abiertos. Mira en [Hugo issue #6109](https://github.com/gohugoio/hugo/issues/6109).
 
-### Content and submodules
+### Contenido y submódulos
 
-The website is built from the following content:
+Este sitio web se genera a partir del siguiente contenido:
 
-- Files under `content/`, `static/`, etc. per [Hugo][] defaults.
-- Mount points, defined in [hugo.yaml][] under `mounts`. Mounts are either
-  directly from git submodules under [content-modules][], or preprocessed
-  content from `content-modules` (placed under `tmp/`), and no where else.
+- Los ficheros bajo `content/`, `static/`, etc. Por defecto en [Hugo][].
+- Los hugo mounts, definidos en [hugo.yaml][] bajo la carpeta `mounts`. Los Hugo mounts también provienen directamente de los submódulos de Git, presentes en [content-modules][], o contenido preprocesado desde `content-modules` (situado bajo `tmp/`).
 
 [hugo.yaml]:
   https://github.com/open-telemetry/opentelemetry.io/blob/main/hugo.yaml
 [content-modules]:
   https://github.com/open-telemetry/opentelemetry.io/tree/main/content-modules
 
-### Submodule changes
+### Cambios en los submódulos
 
-If you change any content inside of a [content-modules][] submodule, then you
-need to first submit a PR (containing the submodule changes) to the submodule's
-repository. Only after the submodule PR has been accepted, can you update the
-submodule and have the changes appear in this website.
+Si realizas un cambio dentro del contenido en los [content-modules][], primero necesitarás crear una PR (que contenga los cambios en el submódulo) al repositorio de submódulos. 
+Solo después de que la PR del submódulo haya sido aceptada, será posible actualizar el submódulo y hacer que los cambios aparezcan en este sitio web.
 
-It's easiest to manage your `content-modules` changes by working with the
-repository that the corresponding submodule is linked to, rather than inside the
-submodule itself.
+Es más sencillo gestionar tus cambios en `content-modules` realizando los cambios en el repositorio al que corresponda el submódulo en lugar de dentro del mismo submódulo.
 
-Expert contributors can work directly in the submodule. You are then able to
-directly build and serve your (submodule) changes. By default, the CI scripts
-get submodules on every invocation. To prevent this behavior while you work
-within a submodule, set the environment variable `GET=no`. You also need to run
-`git fetch --unshallow` the submodule before you can submit a PR. Alternatively,
-set `DEPTH=100` and re-fetch submodules.
+Los colaboradores más expertos pueden trabajar directamente en el submódulo, siendo capaces de construir y servir localmente directamente los cambios en el submódulo. Por defecto, los scripts de CI obtienen los submódulos en cada invocación. Para prevenir este comportamiento mientras trabajas dentro del submódulo, puedes configurar la variable de entorno `GET=no`. También necesitarías ejecutar `git fetch --unshallow` en el submódulo antes de crear la PR. De manera alternativa, puedes configurar `DEPTH=100` para volver a clonar los submódulos.
 
 [clone]:
   https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository
-[Bifurcar]: https://docs.github.com/es/get-started/quickstart/fork-a-repo
+[fork]: https://docs.github.com/es/get-started/quickstart/fork-a-repo
 [gitpod.io]: https://gitpod.io
 [gitpod.io/workspaces]: https://gitpod.io/workspaces
 [hugo]: https://gohugo.io
